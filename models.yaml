@@ -1,0 +1,41 @@
+# Serverpod Data Models for IoT Butler
+
+Device:
+  table: devices
+  fields:
+    id: int, primary, autoIncrement
+    name: String
+    location: String  
+    status: String # online, warning, offline
+    createdAt: DateTime, default=now
+    updatedAt: DateTime, default=now
+
+SensorReading:
+  table: sensor_readings
+  fields:
+    id: int, primary, autoIncrement
+    deviceId: int, relation=Device
+    type: String # temperature, voltage, humidity
+    value: double
+    unit: String # °C, V, %
+    timestamp: DateTime, default=now
+
+Alert:
+  table: alerts  
+  fields:
+    id: int, primary, autoIncrement
+    deviceId: int, relation=Device
+    severity: String # info, warning, critical
+    message: String
+    resolved: bool, default=false
+    createdAt: DateTime, default=now
+    resolvedAt: DateTime?
+
+ButlerExplanation:
+  table: butler_explanations
+  fields:
+    id: int, primary, autoIncrement
+    alertId: int, relation=Alert
+    explanation: String
+    suggestion: String
+    createdAt: DateTime, default=now

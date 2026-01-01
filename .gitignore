@@ -1,0 +1,67 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Serverpod
+iot_butler/iot_butler_server/config/passwords.yaml
+iot_butler/iot_butler_server/generated/
+iot_butler/iot_butler_client/lib/src/protocol/
+iot_butler/iot_butler_flutter/.flutter-plugins
+iot_butler/iot_butler_flutter/.flutter-plugins-dependencies
+
+# Docker
+.docker/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Large files
+flutter_linux.tar.xz
+*.tar.xz
+*.zip
+flutter/
+
+# Node modules (if any)
+node_modules/
+
+# Coverage
+coverage/
+
+# Build outputs
+*.apk
+*.ipa
+*.web
+*.linux
+*.windows
+*.macos
