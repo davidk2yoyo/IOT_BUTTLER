@@ -33,8 +33,8 @@ class ButlerDialog extends StatelessWidget {
                   child: ClipOval(
                     child: Image.asset(
                       'assets/images/iot_butler_logo.png',
-                      width: 32,
-                      height: 32,
+                      width: 40,
+                      height: 40,
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -77,11 +77,64 @@ IoT Butler/
 - ✅ AI-powered explanations for device issues
 - ✅ Suggested actions for problem resolution
 
+### Real IoT Device Integration
+- ✅ **Secure HTTPS data ingest API** for real IoT devices
+- ✅ **API-key based authentication** with cryptographic security
+- ✅ **Vendor-agnostic integration** - works with any device that supports HTTP
+- ✅ **Explicit device registration** - no auto-registration during data ingest
+- ✅ **Real-time status updates** - devices show online/offline/warning states
+- ✅ **Alert threshold monitoring** - automatic alerts when sensor values exceed limits
+- ✅ **Multi-environment support** - works on localhost and production cloud
+
 ### User Experience
 - ✅ Modern gradient design with smooth animations
 - ✅ Responsive layout for web and desktop
 - ✅ Empty states with clear call-to-actions
 - ✅ Loading states and error handling
+
+## 🌐 Real IoT Device Integration
+
+IoT Butler uses a secure HTTPS ingest API that allows real IoT devices to send sensor data. Devices must be registered first and authenticate using an API key. Any IoT device, script, or vendor platform that supports HTTP requests can integrate without vendor-specific SDKs or direct network access.
+
+### Key Features:
+- **Secure Authentication**: Each device gets a unique, cryptographically secure API key
+- **Vendor Agnostic**: Works with any device or service that can make HTTP requests
+- **Real-time Updates**: Device status and sensor readings update immediately in the Flutter dashboard
+- **Alert Integration**: Automatic threshold monitoring with configurable limits
+- **Production Ready**: Same code works on localhost and cloud deployments
+
+### Quick Integration Example:
+
+1. **Register a device** through the Flutter app to get an API key
+2. **Send sensor data** from your IoT device:
+
+```bash
+curl -X POST http://localhost:8093/ingest/ingest \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request": {
+      "deviceId": "1:YOUR_API_KEY_HERE",
+      "type": "temperature",
+      "value": 23.5
+    }
+  }'
+```
+
+3. **See real-time updates** in the Flutter dashboard - device status changes to "online" and charts update with new data
+
+### Supported Sensor Types:
+- **Temperature** (-10°C to 50°C alert thresholds)
+- **Humidity** (10% to 90% alert thresholds)  
+- **Voltage** (3.0V to 5.5V alert thresholds)
+- **Custom** (0 to 100 generic range)
+
+### Error Handling:
+- Invalid API keys return HTTP 401
+- Missing fields return HTTP 400 with descriptive messages
+- Device not found returns HTTP 404
+- All errors include JSON responses with error details
+
+For complete integration examples and testing commands, see [curl_examples.md](curl_examples.md).
 
 ## 🖥️ Screenshots
 

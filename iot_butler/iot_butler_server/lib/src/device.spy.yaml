@@ -1,0 +1,21 @@
+# Enhanced Device model with API key support for IoT integration
+class: Device
+table: device
+
+fields:
+  ### The device name provided by the user
+  name: String
+  ### The device type (temperature, humidity, voltage, other)
+  type: String
+  ### The physical location of the device
+  location: String
+  ### Securely hashed API key for device authentication
+  apiKeyHash: String
+  ### Current device status (offline, online, warning)
+  status: String
+  ### Last time the device sent data
+  lastSeen: DateTime?
+  ### When the device was created
+  createdAt: DateTime
+  ### When the device was last updated
+  updatedAt: DateTime

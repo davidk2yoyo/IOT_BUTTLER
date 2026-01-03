@@ -73,8 +73,8 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
               ),
               child: Image.asset(
                 'assets/images/iot_butler_logo.png',
-                height: 24,
-                width: 24,
+                height: 32,
+                width: 32,
               ),
             ),
             const SizedBox(width: 12),

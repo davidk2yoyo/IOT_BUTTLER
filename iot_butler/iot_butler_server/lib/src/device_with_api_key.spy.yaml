@@ -1,0 +1,8 @@
+# Response model for device creation with API key
+class: DeviceWithApiKey
+
+fields:
+  ### The created device record
+  device: Device
+  ### The plain text API key (returned only once)
+  apiKey: String

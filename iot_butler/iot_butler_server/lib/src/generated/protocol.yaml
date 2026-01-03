@@ -1,2 +1,8 @@
+device:
+  - createDevice:
+  - getAllDevices:
+  - getDevice:
 greeting:
   - hello:
+ingest:
+  - ingest:

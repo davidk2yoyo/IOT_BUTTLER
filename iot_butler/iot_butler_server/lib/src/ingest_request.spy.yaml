@@ -1,0 +1,10 @@
+# Request model for IoT device data ingest
+class: IngestRequest
+
+fields:
+  ### The device ID sending the data
+  deviceId: String
+  ### The type of sensor reading (temperature, humidity, voltage, custom)
+  type: String
+  ### The sensor value
+  value: double

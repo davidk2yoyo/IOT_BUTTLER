@@ -1,0 +1,15 @@
+# Sensor reading model for storing IoT device data
+class: SensorReading
+table: sensor_reading
+
+fields:
+  ### The ID of the device that sent this reading
+  deviceId: int
+  ### The type of sensor reading (temperature, humidity, voltage, custom)
+  type: String
+  ### The sensor value
+  value: double
+  ### When the reading was received
+  timestamp: DateTime
+  ### Whether this reading triggered an alert
+  alertTriggered: bool

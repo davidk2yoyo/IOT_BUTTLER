@@ -8,9 +8,9 @@
 
 # Configuration for the main API server.
 apiServer:
-  port: 8090
+  port: 8093
   publicHost: localhost
-  publicPort: 8090
+  publicPort: 8093
   publicScheme: http
 
 # Configuration for the Insights server.

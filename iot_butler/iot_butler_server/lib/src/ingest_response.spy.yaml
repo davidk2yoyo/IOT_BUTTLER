@@ -1,0 +1,10 @@
+# Response model for IoT device data ingest
+class: IngestResponse
+
+fields:
+  ### Status of the ingest operation ("ok" or "error")
+  status: String
+  ### Whether an alert was triggered by this reading
+  alertTriggered: bool
+  ### Error message if status is "error"
+  errorMessage: String?
