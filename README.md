@@ -109,18 +109,19 @@ IoT Butler uses a secure HTTPS ingest API that allows real IoT devices to send s
 2. **Send sensor data** from your IoT device:
 
 ```bash
-curl -X POST http://localhost:8093/ingest/ingest \
+curl -X POST http://localhost:8093/api/ingest \
+  -H "Authorization: Bearer YOUR_API_KEY_HERE" \
   -H "Content-Type: application/json" \
   -d '{
-    "request": {
-      "deviceId": "1:YOUR_API_KEY_HERE",
-      "type": "temperature",
-      "value": 23.5
-    }
+    "deviceId": "1",
+    "type": "temperature",
+    "value": 23.5
   }'
 ```
 
 3. **See real-time updates** in the Flutter dashboard - device status changes to "online" and charts update with new data
+
+Note: `deviceId` can be the numeric device ID or the device name used at registration.
 
 ### Supported Sensor Types:
 - **Temperature** (-10°C to 50°C alert thresholds)
@@ -177,7 +178,7 @@ The app features a modern, professional interface with:
 ## 🌐 Deployment
 
 ### Local Development
-- Backend runs on `http://localhost:8090`
+- Backend runs on `http://localhost:8093`
 - Frontend connects automatically to local backend
 
 ### Production Deployment
@@ -190,7 +191,7 @@ The app features a modern, professional interface with:
 ### Common Issues
 
 **Port 8080 already in use:**
-- The app now uses port 8090 by default
+- The app now uses port 8093 by default
 - Check `iot_butler_server/config/development.yaml`
 
 **Database connection failed:**

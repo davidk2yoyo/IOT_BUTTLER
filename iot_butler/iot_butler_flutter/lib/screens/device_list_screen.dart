@@ -4,6 +4,7 @@ import '../models/device.dart';
 import '../services/api_service.dart';
 import 'device_detail_screen.dart';
 import 'add_device_screen.dart';
+import 'house_map_screen.dart';
 
 class DeviceListScreen extends StatefulWidget {
   const DeviceListScreen({super.key});
@@ -115,48 +116,13 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
                   ? _buildEmptyState()
                   : _buildDeviceList(),
             ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF667EEA),
-              Color(0xFF764BA2),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF667EEA).withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: FloatingActionButton.extended(
-          onPressed: () async {
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AddDeviceScreen(),
-              ),
-            );
-            if (result == true) {
-              _loadDevices(); // Refresh the list
-            }
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          icon: const Icon(Icons.add, color: Colors.white),
-          label: const Text(
-            'Add Device',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildMapButton(),
+          const SizedBox(height: 12),
+          _buildAddButton(),
+        ],
       ),
     );
   }
@@ -345,6 +311,88 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
           child: SizedBox(height: 100), // Space for FAB
         ),
       ],
+    );
+  }
+
+  Widget _buildMapButton() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HouseMapScreen(devices: _devices),
+            ),
+          );
+        },
+        backgroundColor: Colors.white,
+        elevation: 0,
+        icon: const Icon(Icons.map_outlined, color: Color(0xFF667EEA)),
+        label: const Text(
+          'House Map',
+          style: TextStyle(
+            color: Color(0xFF667EEA),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddButton() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF667EEA),
+            Color(0xFF764BA2),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF667EEA).withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: FloatingActionButton.extended(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddDeviceScreen(),
+            ),
+          );
+          if (result == true) {
+            _loadDevices(); // Refresh the list
+          }
+        },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text(
+          'Add Device',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }

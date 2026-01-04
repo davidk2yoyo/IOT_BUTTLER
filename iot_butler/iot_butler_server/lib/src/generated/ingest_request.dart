@@ -18,12 +18,16 @@ abstract class IngestRequest
     required this.deviceId,
     required this.type,
     required this.value,
+    this.alert,
+    this.alertMessage,
   });
 
   factory IngestRequest({
     required String deviceId,
     required String type,
     required double value,
+    bool? alert,
+    String? alertMessage,
   }) = _IngestRequestImpl;
 
   factory IngestRequest.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -31,6 +35,8 @@ abstract class IngestRequest
       deviceId: jsonSerialization['deviceId'] as String,
       type: jsonSerialization['type'] as String,
       value: (jsonSerialization['value'] as num).toDouble(),
+      alert: jsonSerialization['alert'] as bool?,
+      alertMessage: jsonSerialization['alertMessage'] as String?,
     );
   }
 
@@ -43,6 +49,12 @@ abstract class IngestRequest
   /// The sensor value
   double value;
 
+  /// Optional alert flag provided by device
+  bool? alert;
+
+  /// Optional alert message provided by device
+  String? alertMessage;
+
   /// Returns a shallow copy of this [IngestRequest]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -50,6 +62,8 @@ abstract class IngestRequest
     String? deviceId,
     String? type,
     double? value,
+    bool? alert,
+    String? alertMessage,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -58,6 +72,8 @@ abstract class IngestRequest
       'deviceId': deviceId,
       'type': type,
       'value': value,
+      if (alert != null) 'alert': alert,
+      if (alertMessage != null) 'alertMessage': alertMessage,
     };
   }
 
@@ -68,6 +84,8 @@ abstract class IngestRequest
       'deviceId': deviceId,
       'type': type,
       'value': value,
+      if (alert != null) 'alert': alert,
+      if (alertMessage != null) 'alertMessage': alertMessage,
     };
   }
 
@@ -77,15 +95,21 @@ abstract class IngestRequest
   }
 }
 
+class _Undefined {}
+
 class _IngestRequestImpl extends IngestRequest {
   _IngestRequestImpl({
     required String deviceId,
     required String type,
     required double value,
+    bool? alert,
+    String? alertMessage,
   }) : super._(
          deviceId: deviceId,
          type: type,
          value: value,
+         alert: alert,
+         alertMessage: alertMessage,
        );
 
   /// Returns a shallow copy of this [IngestRequest]
@@ -96,11 +120,15 @@ class _IngestRequestImpl extends IngestRequest {
     String? deviceId,
     String? type,
     double? value,
+    Object? alert = _Undefined,
+    Object? alertMessage = _Undefined,
   }) {
     return IngestRequest(
       deviceId: deviceId ?? this.deviceId,
       type: type ?? this.type,
       value: value ?? this.value,
+      alert: alert is bool? ? alert : this.alert,
+      alertMessage: alertMessage is String? ? alertMessage : this.alertMessage,
     );
   }
 }

@@ -1,5 +1,16 @@
+import 'package:iot_butler_client/iot_butler_client.dart' as sp;
 import '../models/device.dart';
 import '../main.dart'; // For accessing the global client
+
+class CreateDeviceResult {
+  final Device device;
+  final String apiKey;
+
+  CreateDeviceResult({
+    required this.device,
+    required this.apiKey,
+  });
+}
 
 class ApiService {
   // Mock data for development/demo
@@ -80,32 +91,39 @@ class ApiService {
 
   // Device endpoints
   Future<List<Device>> getDevices() async {
-    // For demo purposes, return mock data
-    // TODO: Replace with actual Serverpod endpoint calls
-    // Example: return await client.device.getDevices();
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
-    return _mockDevices;
+    try {
+      final devices = await client.device.getAllDevices();
+      return devices.map(_mapDevice).toList();
+    } catch (e) {
+      await Future.delayed(const Duration(milliseconds: 200));
+      return _mockDevices;
+    }
   }
 
   Future<Device?> getDevice(int deviceId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
     try {
-      return _mockDevices.firstWhere((device) => device.id == deviceId);
+      final device = await client.device.getDevice(deviceId);
+      return device == null ? null : _mapDevice(device);
     } catch (e) {
-      return null;
+      await Future.delayed(const Duration(milliseconds: 200));
+      try {
+        return _mockDevices.firstWhere((device) => device.id == deviceId);
+      } catch (_) {
+        return null;
+      }
     }
   }
 
   // Sensor data endpoints
   Future<List<SensorReading>> getDeviceReadings(int deviceId) async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    return _mockReadings.where((reading) => reading.deviceId == deviceId).toList();
+    final readings = await client.sensor.getDeviceReadings(deviceId);
+    return readings.map(_mapReading).toList();
   }
 
   // Alert endpoints
   Future<List<Alert>> getDeviceAlerts(int deviceId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return _mockAlerts.where((alert) => alert.deviceId == deviceId).toList();
+    final alerts = await client.alert.getDeviceAlerts(deviceId);
+    return alerts.map(_mapAlert).toList();
   }
 
   // Butler AI endpoint
@@ -139,12 +157,70 @@ class ApiService {
   }
 
   Future<void> resolveAlert(int alertId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    // In production, this would update the alert status on the server
-    final alertIndex = _mockAlerts.indexWhere((alert) => alert.id == alertId);
-    if (alertIndex != -1) {
-      // Mock resolving the alert locally
-      print('Alert $alertId resolved');
+    await client.alert.resolveAlert(alertId);
+  }
+
+  Future<CreateDeviceResult> createDevice({
+    required String name,
+    required String type,
+    required String location,
+  }) async {
+    final result = await client.device.createDevice(
+      name: name,
+      type: type,
+      location: location,
+    );
+
+    return CreateDeviceResult(
+      device: _mapDevice(result.device),
+      apiKey: result.apiKey,
+    );
+  }
+
+  Device _mapDevice(sp.Device device) {
+    return Device(
+      id: device.id ?? 0,
+      name: device.name,
+      location: device.location,
+      status: device.status,
+      createdAt: device.createdAt,
+      updatedAt: device.updatedAt,
+    );
+  }
+
+  Alert _mapAlert(sp.Alert alert) {
+    return Alert(
+      id: alert.id ?? 0,
+      deviceId: alert.deviceId,
+      severity: alert.severity,
+      message: alert.message,
+      resolved: alert.resolved,
+      createdAt: alert.createdAt,
+      resolvedAt: alert.resolvedAt,
+    );
+  }
+
+  SensorReading _mapReading(sp.SensorReading reading) {
+    return SensorReading(
+      id: reading.id ?? 0,
+      deviceId: reading.deviceId,
+      type: reading.type,
+      value: reading.value,
+      unit: _unitForType(reading.type),
+      timestamp: reading.timestamp,
+    );
+  }
+
+  String _unitForType(String type) {
+    switch (type.toLowerCase()) {
+      case 'temperature':
+        return '°C';
+      case 'voltage':
+        return 'V';
+      case 'humidity':
+        return '%';
+      default:
+        return '';
     }
   }
 }

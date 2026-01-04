@@ -14,6 +14,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   final _locationController = TextEditingController();
   final _ipController = TextEditingController();
   final _portController = TextEditingController();
+  final ApiService _apiService = ApiService();
   
   String _selectedDeviceType = 'sensor';
   bool _isLoading = false;
@@ -54,6 +55,12 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
       'label': 'Smart Lock',
       'icon': Icons.door_front_door,
       'color': const Color(0xFF6B7280),
+    },
+    {
+      'value': 'other',
+      'label': 'Other',
+      'icon': Icons.device_unknown,
+      'color': const Color(0xFF64748B),
     },
   ];
 
@@ -420,27 +427,24 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
     });
 
     try {
-      // TODO: Implement actual device addition via API
-      await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-      
+      final result = await _apiService.createDevice(
+        name: _nameController.text.trim(),
+        type: _selectedDeviceType,
+        location: _locationController.text.trim(),
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      await _showApiKeyDialog(
+        deviceName: result.device.name,
+        deviceId: result.device.id,
+        apiKey: result.apiKey,
+      );
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white),
-                const SizedBox(width: 12),
-                Text('${_nameController.text} added successfully!'),
-              ],
-            ),
-            backgroundColor: const Color(0xFF10B981),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        );
-        Navigator.pop(context, true); // Return true to indicate success
+        Navigator.pop(context, true);
       }
     } catch (e) {
       if (mounted) {
@@ -462,5 +466,48 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
         });
       }
     }
+  }
+
+  Future<void> _showApiKeyDialog({
+    required String deviceName,
+    required int deviceId,
+    required String apiKey,
+  }) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Device Created'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Device: $deviceName'),
+            const SizedBox(height: 8),
+            Text(
+              'Device ID: $deviceId',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'This key is used by the device or service to send data securely:',
+            ),
+            const SizedBox(height: 8),
+            SelectableText(
+              apiKey,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            const Text('Copy it now. You will not be shown this key again.'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
   }
 }

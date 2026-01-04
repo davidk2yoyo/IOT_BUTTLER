@@ -7,10 +7,10 @@ import 'screens/device_list_screen.dart';
 late final Client client;
 
 void main() {
-  // Update the port to match our server configuration (8090)
+  // Update the port to match our server configuration (8093)
   const serverUrlFromEnv = String.fromEnvironment('SERVER_URL');
   final serverUrl =
-      serverUrlFromEnv.isEmpty ? 'http://localhost:8090/' : serverUrlFromEnv;
+      serverUrlFromEnv.isEmpty ? 'http://localhost:8093/' : serverUrlFromEnv;
 
   client = Client(serverUrl)
     ..connectivityMonitor = FlutterConnectivityMonitor();

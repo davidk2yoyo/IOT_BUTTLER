@@ -62,6 +62,22 @@ class DeviceRegistryService {
       where: (t) => t.apiKeyHash.equals(apiKeyHash) & t.id.equals(deviceIdInt),
     );
   }
+
+  /// Finds a device by ID or name (for string identifiers)
+  static Future<Device?> findDeviceByIdentifier(
+    Session session,
+    String deviceId,
+  ) async {
+    final deviceIdInt = int.tryParse(deviceId);
+    if (deviceIdInt != null) {
+      return await Device.db.findById(session, deviceIdInt);
+    }
+
+    return await Device.db.findFirstRow(
+      session,
+      where: (t) => t.name.equals(deviceId),
+    );
+  }
   
   /// Updates device status
   static Future<void> updateDeviceStatus(

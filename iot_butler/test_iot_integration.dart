@@ -98,18 +98,22 @@ Future<Map<String, dynamic>?> createDevice(String baseUrl) async {
   }
 }
 
-Future<Map<String, dynamic>?> sendSensorData(String baseUrl, String deviceId, String apiKey, {double value = 25.5}) async {
+Future<Map<String, dynamic>?> sendSensorData(
+  String baseUrl,
+  String deviceId,
+  String apiKey, {
+  double value = 25.5,
+}) async {
   try {
     final client = HttpClient();
-    final request = await client.postUrl(Uri.parse('$baseUrl/ingest/ingest'));
+    final request = await client.postUrl(Uri.parse('$baseUrl/api/ingest'));
     request.headers.contentType = ContentType.json;
+    request.headers.set(HttpHeaders.authorizationHeader, 'Bearer $apiKey');
     
     final body = jsonEncode({
-      'request': {
-        'deviceId': '$deviceId:$apiKey', // Using our temporary format
-        'type': 'temperature',
-        'value': value
-      }
+      'deviceId': deviceId,
+      'type': 'temperature',
+      'value': value
     });
     
     request.write(body);

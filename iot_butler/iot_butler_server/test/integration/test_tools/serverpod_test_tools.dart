@@ -15,12 +15,14 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
+import 'package:iot_butler_server/src/generated/alert.dart' as _i4;
+import 'package:iot_butler_server/src/generated/ingest_response.dart' as _i5;
 import 'package:iot_butler_server/src/generated/device_with_api_key.dart'
-    as _i4;
-import 'package:iot_butler_server/src/generated/device.dart' as _i5;
-import 'package:iot_butler_server/src/generated/greeting.dart' as _i6;
-import 'package:iot_butler_server/src/generated/ingest_response.dart' as _i7;
-import 'package:iot_butler_server/src/generated/ingest_request.dart' as _i8;
+    as _i6;
+import 'package:iot_butler_server/src/generated/device.dart' as _i7;
+import 'package:iot_butler_server/src/generated/greeting.dart' as _i8;
+import 'package:iot_butler_server/src/generated/ingest_request.dart' as _i9;
+import 'package:iot_butler_server/src/generated/sensor_reading.dart' as _i10;
 import 'package:iot_butler_server/src/generated/protocol.dart';
 import 'package:iot_butler_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -128,11 +130,17 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final _AlertEndpoint alert;
+
+  late final _ApiEndpoint api;
+
   late final _DeviceEndpoint device;
 
   late final _GreetingEndpoint greeting;
 
   late final _IngestEndpoint ingest;
+
+  late final _SensorEndpoint sensor;
 }
 
 class _InternalTestEndpoints extends TestEndpoints
@@ -142,6 +150,14 @@ class _InternalTestEndpoints extends TestEndpoints
     _i2.SerializationManager serializationManager,
     _i2.EndpointDispatch endpoints,
   ) {
+    alert = _AlertEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    api = _ApiEndpoint(
+      endpoints,
+      serializationManager,
+    );
     device = _DeviceEndpoint(
       endpoints,
       serializationManager,
@@ -154,6 +170,135 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    sensor = _SensorEndpoint(
+      endpoints,
+      serializationManager,
+    );
+  }
+}
+
+class _AlertEndpoint {
+  _AlertEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<List<_i4.Alert>> getDeviceAlerts(
+    _i1.TestSessionBuilder sessionBuilder,
+    int deviceId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'alert',
+            method: 'getDeviceAlerts',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'alert',
+          methodName: 'getDeviceAlerts',
+          parameters: _i1.testObjectToJson({'deviceId': deviceId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<List<_i4.Alert>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> resolveAlert(
+    _i1.TestSessionBuilder sessionBuilder,
+    int alertId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'alert',
+            method: 'resolveAlert',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'alert',
+          methodName: 'resolveAlert',
+          parameters: _i1.testObjectToJson({'alertId': alertId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _ApiEndpoint {
+  _ApiEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i5.IngestResponse> ingest(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required String deviceId,
+    required String type,
+    required double value,
+    bool? alert,
+    String? alertMessage,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'api',
+            method: 'ingest',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'api',
+          methodName: 'ingest',
+          parameters: _i1.testObjectToJson({
+            'deviceId': deviceId,
+            'type': type,
+            'value': value,
+            'alert': alert,
+            'alertMessage': alertMessage,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<_i5.IngestResponse>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
   }
 }
 
@@ -167,7 +312,7 @@ class _DeviceEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i4.DeviceWithApiKey> createDevice(
+  _i3.Future<_i6.DeviceWithApiKey> createDevice(
     _i1.TestSessionBuilder sessionBuilder, {
     required String name,
     required String type,
@@ -196,7 +341,7 @@ class _DeviceEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i4.DeviceWithApiKey>);
+                as _i3.Future<_i6.DeviceWithApiKey>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -204,7 +349,7 @@ class _DeviceEndpoint {
     });
   }
 
-  _i3.Future<List<_i5.Device>> getAllDevices(
+  _i3.Future<List<_i7.Device>> getAllDevices(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -226,7 +371,7 @@ class _DeviceEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i5.Device>>);
+                as _i3.Future<List<_i7.Device>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -234,7 +379,7 @@ class _DeviceEndpoint {
     });
   }
 
-  _i3.Future<_i5.Device?> getDevice(
+  _i3.Future<_i7.Device?> getDevice(
     _i1.TestSessionBuilder sessionBuilder,
     int deviceId,
   ) async {
@@ -257,7 +402,7 @@ class _DeviceEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i5.Device?>);
+                as _i3.Future<_i7.Device?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -276,7 +421,7 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i6.Greeting> hello(
+  _i3.Future<_i8.Greeting> hello(
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -299,7 +444,7 @@ class _GreetingEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i6.Greeting>);
+                as _i3.Future<_i8.Greeting>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -318,9 +463,9 @@ class _IngestEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.IngestResponse> ingest(
+  _i3.Future<_i5.IngestResponse> ingest(
     _i1.TestSessionBuilder sessionBuilder,
-    _i8.IngestRequest request,
+    _i9.IngestRequest request,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -341,7 +486,53 @@ class _IngestEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.IngestResponse>);
+                as _i3.Future<_i5.IngestResponse>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _SensorEndpoint {
+  _SensorEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<List<_i10.SensorReading>> getDeviceReadings(
+    _i1.TestSessionBuilder sessionBuilder,
+    int deviceId, {
+    DateTime? since,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'sensor',
+            method: 'getDeviceReadings',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'sensor',
+          methodName: 'getDeviceReadings',
+          parameters: _i1.testObjectToJson({
+            'deviceId': deviceId,
+            'since': since,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _i3.Future<List<_i10.SensorReading>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

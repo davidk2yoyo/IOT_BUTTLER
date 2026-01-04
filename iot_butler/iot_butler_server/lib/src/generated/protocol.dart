@@ -12,13 +12,17 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
-import 'device.dart' as _i3;
-import 'device_with_api_key.dart' as _i4;
-import 'greeting.dart' as _i5;
-import 'ingest_request.dart' as _i6;
-import 'ingest_response.dart' as _i7;
-import 'sensor_reading.dart' as _i8;
-import 'package:iot_butler_server/src/generated/device.dart' as _i9;
+import 'alert.dart' as _i3;
+import 'device.dart' as _i4;
+import 'device_with_api_key.dart' as _i5;
+import 'greeting.dart' as _i6;
+import 'ingest_request.dart' as _i7;
+import 'ingest_response.dart' as _i8;
+import 'sensor_reading.dart' as _i9;
+import 'package:iot_butler_server/src/generated/alert.dart' as _i10;
+import 'package:iot_butler_server/src/generated/device.dart' as _i11;
+import 'package:iot_butler_server/src/generated/sensor_reading.dart' as _i12;
+export 'alert.dart';
 export 'device.dart';
 export 'device_with_api_key.dart';
 export 'greeting.dart';
@@ -34,6 +38,74 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'alert',
+      dartName: 'Alert',
+      schema: 'public',
+      module: 'iot_butler',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'alert_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'deviceId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'severity',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'message',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'resolved',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'resolvedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'alert_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'device',
       dartName: 'Device',
@@ -206,44 +278,60 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
 
-    if (t == _i3.Device) {
-      return _i3.Device.fromJson(data) as T;
+    if (t == _i3.Alert) {
+      return _i3.Alert.fromJson(data) as T;
     }
-    if (t == _i4.DeviceWithApiKey) {
-      return _i4.DeviceWithApiKey.fromJson(data) as T;
+    if (t == _i4.Device) {
+      return _i4.Device.fromJson(data) as T;
     }
-    if (t == _i5.Greeting) {
-      return _i5.Greeting.fromJson(data) as T;
+    if (t == _i5.DeviceWithApiKey) {
+      return _i5.DeviceWithApiKey.fromJson(data) as T;
     }
-    if (t == _i6.IngestRequest) {
-      return _i6.IngestRequest.fromJson(data) as T;
+    if (t == _i6.Greeting) {
+      return _i6.Greeting.fromJson(data) as T;
     }
-    if (t == _i7.IngestResponse) {
-      return _i7.IngestResponse.fromJson(data) as T;
+    if (t == _i7.IngestRequest) {
+      return _i7.IngestRequest.fromJson(data) as T;
     }
-    if (t == _i8.SensorReading) {
-      return _i8.SensorReading.fromJson(data) as T;
+    if (t == _i8.IngestResponse) {
+      return _i8.IngestResponse.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i3.Device?>()) {
-      return (data != null ? _i3.Device.fromJson(data) : null) as T;
+    if (t == _i9.SensorReading) {
+      return _i9.SensorReading.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i4.DeviceWithApiKey?>()) {
-      return (data != null ? _i4.DeviceWithApiKey.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i3.Alert?>()) {
+      return (data != null ? _i3.Alert.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i5.Greeting?>()) {
-      return (data != null ? _i5.Greeting.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i4.Device?>()) {
+      return (data != null ? _i4.Device.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.IngestRequest?>()) {
-      return (data != null ? _i6.IngestRequest.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.DeviceWithApiKey?>()) {
+      return (data != null ? _i5.DeviceWithApiKey.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.IngestResponse?>()) {
-      return (data != null ? _i7.IngestResponse.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.Greeting?>()) {
+      return (data != null ? _i6.Greeting.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.SensorReading?>()) {
-      return (data != null ? _i8.SensorReading.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.IngestRequest?>()) {
+      return (data != null ? _i7.IngestRequest.fromJson(data) : null) as T;
     }
-    if (t == List<_i9.Device>) {
-      return (data as List).map((e) => deserialize<_i9.Device>(e)).toList()
+    if (t == _i1.getType<_i8.IngestResponse?>()) {
+      return (data != null ? _i8.IngestResponse.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i9.SensorReading?>()) {
+      return (data != null ? _i9.SensorReading.fromJson(data) : null) as T;
+    }
+    if (t == List<_i10.Alert>) {
+      return (data as List).map((e) => deserialize<_i10.Alert>(e)).toList()
+          as T;
+    }
+    if (t == List<_i11.Device>) {
+      return (data as List).map((e) => deserialize<_i11.Device>(e)).toList()
+          as T;
+    }
+    if (t == List<_i12.SensorReading>) {
+      return (data as List)
+              .map((e) => deserialize<_i12.SensorReading>(e))
+              .toList()
           as T;
     }
     try {
@@ -254,12 +342,13 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _i3.Device => 'Device',
-      _i4.DeviceWithApiKey => 'DeviceWithApiKey',
-      _i5.Greeting => 'Greeting',
-      _i6.IngestRequest => 'IngestRequest',
-      _i7.IngestResponse => 'IngestResponse',
-      _i8.SensorReading => 'SensorReading',
+      _i3.Alert => 'Alert',
+      _i4.Device => 'Device',
+      _i5.DeviceWithApiKey => 'DeviceWithApiKey',
+      _i6.Greeting => 'Greeting',
+      _i7.IngestRequest => 'IngestRequest',
+      _i8.IngestResponse => 'IngestResponse',
+      _i9.SensorReading => 'SensorReading',
       _ => null,
     };
   }
@@ -274,17 +363,19 @@ class Protocol extends _i1.SerializationManagerServer {
     }
 
     switch (data) {
-      case _i3.Device():
+      case _i3.Alert():
+        return 'Alert';
+      case _i4.Device():
         return 'Device';
-      case _i4.DeviceWithApiKey():
+      case _i5.DeviceWithApiKey():
         return 'DeviceWithApiKey';
-      case _i5.Greeting():
+      case _i6.Greeting():
         return 'Greeting';
-      case _i6.IngestRequest():
+      case _i7.IngestRequest():
         return 'IngestRequest';
-      case _i7.IngestResponse():
+      case _i8.IngestResponse():
         return 'IngestResponse';
-      case _i8.SensorReading():
+      case _i9.SensorReading():
         return 'SensorReading';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -300,23 +391,26 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
+    if (dataClassName == 'Alert') {
+      return deserialize<_i3.Alert>(data['data']);
+    }
     if (dataClassName == 'Device') {
-      return deserialize<_i3.Device>(data['data']);
+      return deserialize<_i4.Device>(data['data']);
     }
     if (dataClassName == 'DeviceWithApiKey') {
-      return deserialize<_i4.DeviceWithApiKey>(data['data']);
+      return deserialize<_i5.DeviceWithApiKey>(data['data']);
     }
     if (dataClassName == 'Greeting') {
-      return deserialize<_i5.Greeting>(data['data']);
+      return deserialize<_i6.Greeting>(data['data']);
     }
     if (dataClassName == 'IngestRequest') {
-      return deserialize<_i6.IngestRequest>(data['data']);
+      return deserialize<_i7.IngestRequest>(data['data']);
     }
     if (dataClassName == 'IngestResponse') {
-      return deserialize<_i7.IngestResponse>(data['data']);
+      return deserialize<_i8.IngestResponse>(data['data']);
     }
     if (dataClassName == 'SensorReading') {
-      return deserialize<_i8.SensorReading>(data['data']);
+      return deserialize<_i9.SensorReading>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -334,10 +428,12 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i3.Device:
-        return _i3.Device.t;
-      case _i8.SensorReading:
-        return _i8.SensorReading.t;
+      case _i3.Alert:
+        return _i3.Alert.t;
+      case _i4.Device:
+        return _i4.Device.t;
+      case _i9.SensorReading:
+        return _i9.SensorReading.t;
     }
     return null;
   }

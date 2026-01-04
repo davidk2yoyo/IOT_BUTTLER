@@ -1,0 +1,17 @@
+# Alert model for device notifications
+class: Alert
+table: alert
+
+fields:
+  ### Device that triggered the alert
+  deviceId: int
+  ### Alert severity (info, warning, critical)
+  severity: String
+  ### Alert message for display
+  message: String
+  ### Whether the alert has been resolved
+  resolved: bool
+  ### When the alert was created
+  createdAt: DateTime
+  ### When the alert was resolved
+  resolvedAt: DateTime?

@@ -1,3 +1,8 @@
+alert:
+  - getDeviceAlerts:
+  - resolveAlert:
+api:
+  - ingest:
 device:
   - createDevice:
   - getAllDevices:
@@ -6,3 +11,5 @@ greeting:
   - hello:
 ingest:
   - ingest:
+sensor:
+  - getDeviceReadings:

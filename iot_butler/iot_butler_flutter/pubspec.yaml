@@ -24,7 +24,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  serverpod_flutter: 2.9.2
+  serverpod_flutter: 3.1.1
   iot_butler_client:
     path: ../iot_butler_client
   fl_chart: ^0.69.0

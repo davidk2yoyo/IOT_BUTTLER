@@ -8,3 +8,7 @@ fields:
   type: String
   ### The sensor value
   value: double
+  ### Optional alert flag provided by device
+  alert: bool?
+  ### Optional alert message provided by device
+  alertMessage: String?

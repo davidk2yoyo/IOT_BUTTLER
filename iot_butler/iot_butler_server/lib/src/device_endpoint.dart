@@ -27,7 +27,17 @@ class DeviceEndpoint extends Endpoint {
       }
       
       // Validate device type
-      const validTypes = ['temperature', 'humidity', 'voltage', 'other'];
+      const validTypes = [
+        'sensor',
+        'solar',
+        'voltage',
+        'camera',
+        'light',
+        'door',
+        'other',
+        'temperature',
+        'humidity',
+      ];
       if (!validTypes.contains(type)) {
         throw ArgumentError('Invalid device type: $type. Valid types: ${validTypes.join(', ')}');
       }
